@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container');
     const searchInput = document.getElementById('playerSearch');
+    const roleFilter = document.getElementById('roleFilter');
+    const ovrFilter = document.getElementById('ovrFilter');
+    const countryFilter = document.getElementById('countryFilter');
     const countDisplay = document.getElementById('count');
     let allPlayers = [];
 
@@ -15,16 +18,30 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = `<p style="color:red">Failed to load players: ${err.message}</p>`;
         });
 
-    // Search Logic
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = allPlayers.filter(p => 
-            p.name.toLowerCase().includes(term) || 
-            p.country.toLowerCase().includes(term) ||
-            p.role.toLowerCase().includes(term)
-        );
-        updateDisplay(filtered);
+    // Add listeners to all inputs for real-time filtering
+    [searchInput, roleFilter, ovrFilter, countryFilter].forEach(el => {
+        if (el) {
+            el.addEventListener('input', applyFilters);
+        }
     });
+
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const roleTerm = roleFilter.value;
+        const ovrTerm = ovrFilter.value;
+        const countryTerm = countryFilter.value;
+
+        const filtered = allPlayers.filter(p => {
+            const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+            const matchesRole = roleTerm === "" || p.role === roleTerm;
+            const matchesCountry = countryTerm === "" || p.country === countryTerm;
+            const matchesOVR = ovrTerm === "" || p.ovr >= parseInt(ovrTerm);
+
+            return matchesSearch && matchesRole && matchesCountry && matchesOVR;
+        });
+
+        updateDisplay(filtered);
+    }
 
     function updateDisplay(list) {
         countDisplay.innerText = list.length;
