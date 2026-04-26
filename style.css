@@ -179,3 +179,22 @@ select {
 .card-L { border-color: var(--legend); box-shadow: 0 0 15px rgba(255, 202, 40, 0.3); }
 .card-S { border-color: var(--special); box-shadow: 0 0 15px rgba(188, 19, 254, 0.3); }
 .card-W { border-color: var(--star); box-shadow: 0 0 15px rgba(0, 230, 118, 0.2); }
+
+.elite-price-tag {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffd700;
+    font-weight: 800;
+    padding: 5px 0;
+    font-size: 0.9rem;
+}
+
+.full-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
