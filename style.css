@@ -53,7 +53,11 @@ header {
 
 /* Normal Card Styling */
 .card-N {
-    background: linear-gradient(135deg, #2c3e50, #000000);
+    background-image: url('templates/normal_template.png'); /* Add this file to your folder */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border: 2px solid #555;
 }
 
 .player-img {
