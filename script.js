@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const countDisplay = document.getElementById('count');
     let allPlayers = [];
 
-    // Load Data
+    // 1. Load Data
     fetch('players_data.json')
         .then(res => res.json())
         .then(data => {
@@ -18,13 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = `<p style="color:red">Failed to load players: ${err.message}</p>`;
         });
 
-    // Add listeners to all inputs for real-time filtering
-    [searchInput, roleFilter, ovrFilter, countryFilter].forEach(el => {
-        if (el) {
-            el.addEventListener('input', applyFilters);
-        }
-    });
-
+    // 2. Multi-Filter Logic
     function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
         const roleTerm = roleFilter.value;
@@ -43,11 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay(filtered);
     }
 
+    // 3. Event Listeners for search and dropdowns
+    [searchInput, roleFilter, ovrFilter, countryFilter].forEach(el => {
+        if (el) el.addEventListener('input', applyFilters);
+    });
+
     function updateDisplay(list) {
         countDisplay.innerText = list.length;
         container.innerHTML = list.map(player => createCard(player)).join('');
     }
 
+    // 4. Your Card Template function
     function createCard(p) {
         const catClass = `card-${p.category}`;
         const img = p.image || 'https://via.placeholder.com/300x330?text=Cric+Core';
