@@ -49,3 +49,40 @@ function createCard(p) {
         </div>
     `;
 }
+let playersData = [];
+
+// 1. Load Data
+fetch('players_data.json')
+    .then(res => res.json())
+    .then(data => {
+        playersData = data;
+        renderPlayers(playersData);
+    });
+
+// 2. Render Function
+function renderPlayers(list) {
+    const container = document.getElementById('container');
+    const countLabel = document.getElementById('count');
+    
+    container.innerHTML = list.map(p => createCard(p)).join('');
+    countLabel.innerText = list.length;
+}
+
+// 3. Search & Filter Logic
+document.querySelector('.search-container').addEventListener('input', () => {
+    const search = document.getElementById('playerSearch').value.toLowerCase();
+    const role = document.getElementById('roleFilter').value;
+    const minOvr = parseInt(document.getElementById('ovrFilter').value) || 0;
+    const country = document.getElementById('countryFilter').value;
+
+    const filtered = playersData.filter(p => {
+        return p.name.toLowerCase().includes(search) &&
+               (role === "" || p.role === role) &&
+               (p.ovr >= minOvr) &&
+               (country === "" || p.country === country);
+    });
+
+    renderPlayers(filtered);
+});
+
+// Keep your existing function createCard(p) { ... } below this
