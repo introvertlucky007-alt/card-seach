@@ -1,85 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('container');
-    const searchInput = document.getElementById('playerSearch');
-    const roleFilter = document.getElementById('roleFilter');
-    const ovrFilter = document.getElementById('ovrFilter');
-    const countryFilter = document.getElementById('countryFilter');
-    const countDisplay = document.getElementById('count');
-    let allPlayers = [];
+function createCard(p) {
+    const catClass = `card-${p.category}`;
+    const price = p.price ? `CC ${p.price.toLocaleString()}` : 'FREE';
 
-    // 1. Load Data
-    fetch('players_data.json')
-        .then(res => res.json())
-        .then(data => {
-            allPlayers = data;
-            updateDisplay(allPlayers);
-        })
-        .catch(err => {
-            container.innerHTML = `<p style="color:red">Failed to load players: ${err.message}</p>`;
-        });
-
-    // 2. Multi-Filter Logic
-    function applyFilters() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const roleTerm = roleFilter.value;
-        const ovrTerm = ovrFilter.value;
-        const countryTerm = countryFilter.value;
-
-        const filtered = allPlayers.filter(p => {
-            const matchesSearch = p.name.toLowerCase().includes(searchTerm);
-            const matchesRole = roleTerm === "" || p.role === roleTerm;
-            const matchesCountry = countryTerm === "" || p.country === countryTerm;
-            const matchesOVR = ovrTerm === "" || p.ovr >= parseInt(ovrTerm);
-
-            return matchesSearch && matchesRole && matchesCountry && matchesOVR;
-        });
-
-        updateDisplay(filtered);
-    }
-
-    // 3. Event Listeners for search and dropdowns
-    [searchInput, roleFilter, ovrFilter, countryFilter].forEach(el => {
-        if (el) el.addEventListener('input', applyFilters);
-    });
-
-    function updateDisplay(list) {
-        countDisplay.innerText = list.length;
-        container.innerHTML = list.map(player => createCard(player)).join('');
-    }
-
-    // 4. Your Card Template function
-    function createCard(p) {
-        const catClass = `card-${p.category}`;
-        const img = p.image || 'https://via.placeholder.com/300x330?text=Cric+Core';
-        const price = p.price ? `CC ${p.price.toLocaleString()}` : 'FREE';
-        const trait = p.bat_trait || p.bowl_trait || 'N/A';
-
+    // ELITE CARD LOGIC (S, L, W)
+    // These cards are pre-designed full images. We don't want to overlay stats on them.
+    if (["S", "L", "W"].includes(p.category)) {
+        const img = p.image || 'https://via.placeholder.com/300x420?text=Check+Path';
         return `
-            <div class="card ${catClass}">
-                <div class="ovr-circle">${p.ovr}</div>
-                <div class="img-box">
-                    <img src="${img}" alt="${p.name}" loading="lazy">
-                </div>
-                <div class="details">
-                    <span class="sub-info">${p.country} • ${p.role}</span>
-                    <span class="name">${p.name}</span>
-                    <div class="stats-row">
-                        <div class="stat">
-                            <span class="stat-lab">BAT</span>
-                            <span class="stat-val">${p.bat_ovr}</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-lab">BOWL</span>
-                            <span class="stat-val">${p.bowl_ovr}</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-lab">TRAIT</span>
-                            <span class="stat-val" style="font-size:0.8rem">${trait}</span>
-                        </div>
-                    </div>
-                    <div class="price">${price}</div>
-                </div>
+            <div class="card ${catClass} card-elite">
+                <img src="${img}" alt="${p.name}" class="full-card-img" loading="lazy" 
+                     onerror="this.src='https://via.placeholder.com/300x420?text=Broken+Path'">
+                <div class="elite-price-tag">${price}</div>
             </div>
         `;
     }
-});
+
+    // NORMAL CARD LOGIC (N)
+    // These use the template background and individual player photos.
+    const img = `players/${p.id}.png`; // Path for cutouts
+    const trait = p.bat_trait || p.bowl_trait || 'N/A';
+
+    return `
+        <div class="card ${catClass}">
+            <div class="ovr-circle">${p.ovr}</div>
+            <div class="img-box">
+                <img src="${img}" alt="${p.name}" loading="lazy" 
+                     onerror="this.src='https://via.placeholder.com/150?text=No+Photo'">
+            </div>
+            <div class="details">
+                <span class="sub-info">${p.country} • ${p.role}</span>
+                <span class="name">${p.name}</span>
+                <div class="stats-row">
+                    <div class="stat">
+                        <span class="stat-lab">BAT</span>
+                        <span class="stat-val">${p.bat_ovr}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-lab">BOWL</span>
+                        <span class="stat-val">${p.bowl_ovr}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-lab">TRAIT</span>
+                        <span class="stat-val" style="font-size:0.7rem">${trait}</span>
+                    </div>
+                </div>
+                <div class="price">${price}</div>
+            </div>
+        </div>
+    `;
+}
