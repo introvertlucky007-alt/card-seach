@@ -39,7 +39,28 @@ h1 {
     margin-top: 1.5rem;
     display: flex;
     justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
+
+#playerSearch {
+    flex: 2;
+    min-width: 200px;
+}
+
+select {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+select:focus { border-color: var(--neon-blue); }
 
 #playerSearch {
     width: 100%;
