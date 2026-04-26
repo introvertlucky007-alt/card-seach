@@ -1,9 +1,7 @@
 async function loadDatabase() {
     const res = await fetch('players_data.json');
     const data = await res.json();
-    document.getElementById('count').innerText = data.length;
-
-    // Group players by OVR
+    
     const groups = data.reduce((acc, player) => {
         const ovr = player.ovr;
         if (!acc[ovr]) acc[ovr] = [];
@@ -17,37 +15,33 @@ async function loadDatabase() {
     sortedOvrs.forEach(ovr => {
         const section = document.createElement('div');
         section.className = 'ovr-group';
-        section.innerHTML = `<h2 class="ovr-title">OVR ${ovr}</h2><div class="card-grid" id="grid-${ovr}"></div>`;
-        container.appendChild(section);
+        section.innerHTML = `<h2 class="ovr-title">OVR ${ovr}</h2><div class="card-grid"></div>`;
+        const grid = section.querySelector('.card-grid');
 
-        const grid = document.getElementById(`grid-${ovr}`);
         groups[ovr].forEach(player => {
             const card = document.createElement('div');
             card.className = `card card-${player.category}`;
 
-            // Updated check: S (Special), L (Legend), and W (Stars) all get full images
-            if (player.category === "S" || player.category === "L" || player.category === "W") {
+            // Check if it's an Elite Card (S, L, or W)
+            if (["S", "L", "W"].includes(player.category)) {
                 card.innerHTML = `
-                    <img src="${player.image}" class="full-image" onerror="this.src='https://via.placeholder.com/200x280?text=Card+Missing'">
-                    <div class="card-price-overlay">₹${player.price.toLocaleString()}</div>
+                    <img src="${player.image}" class="full-card-img" onerror="this.src='https://via.placeholder.com/200x280?text=Check+Extension'">
+                    <div class="price-overlay">₹${player.price.toLocaleString()}</div>
                 `;
             } else {
-                // Normal cards (N) logic
+                // It's a Normal Card (N)
                 card.innerHTML = `
-                    <div class="ovr-label">${player.ovr}</div>
-                    <div class="player-photo-container">
-                        <img src="players/${player.id}.png" class="player-img" onerror="this.src='https://via.placeholder.com/150?text=Photo'">
-                    </div>
-                    <div class="card-info">
-                        <div class="player-role">${player.role}</div>
-                        <div class="player-name">${player.name}</div>
-                        <div class="price">₹${player.price.toLocaleString()}</div>
+                    <div class="ovr-tag">${player.ovr}</div>
+                    <img src="players/${player.id}.png" class="cutout-img" onerror="this.src='https://via.placeholder.com/150?text=No+Photo'">
+                    <div class="card-details">
+                        <div class="p-name">${player.name}</div>
+                        <div class="p-price">₹${player.price.toLocaleString()}</div>
                     </div>
                 `;
             }
             grid.appendChild(card);
         });
+        container.appendChild(section);
     });
 }
-
 loadDatabase();
