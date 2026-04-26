@@ -12,13 +12,33 @@
         <p>Total Players: <span id="count">0</span></p>
         
         <div class="search-container">
-            <input type="text" id="playerSearch" placeholder="Search by name, country, or role...">
-        </div>
-    </header>
+            <input type="text" id="playerSearch" placeholder="Search name...">
+            
+            <select id="roleFilter">
+                <option value="">All Roles</option>
+                <option value="Batter">Batter</option>
+                <option value="Bowler">Bowler</option>
+                <option value="Allrounder">Allrounder</option>
+                <option value="Wicketkeeper">Wicketkeeper</option>
+            </select>
 
-    <div id="container">
-        </div>
+            <select id="ovrFilter">
+                <option value="">All OVR</option>
+                <option value="95">95+</option>
+                <option value="90">90+</option>
+                <option value="85">85+</option>
+                <option value="80">80+</option>
+            </select>
 
-    <script src="script.js"></script>
+            <select id="countryFilter">
+                <option value="">All Countries</option>
+                <option value="IND">India</option>
+                <option value="AUS">Australia</option>
+                <option value="ENG">England</option>
+                <option value="PAK">Pakistan</option>
+                <option value="SA">South Africa</option>
+            </select>
+        </div>
+    </header> <script src="script.js"></script>
 </body>
 </html>
