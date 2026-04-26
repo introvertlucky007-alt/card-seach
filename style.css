@@ -34,7 +34,7 @@ h1 {
     margin-bottom: 1rem;
 }
 
-/* Search Bar UI */
+/* --- Search Bar UI --- */
 .search-container {
     margin-top: 1.5rem;
     display: flex;
@@ -42,25 +42,6 @@ h1 {
     gap: 10px;
     flex-wrap: wrap;
 }
-
-#playerSearch {
-    flex: 2;
-    min-width: 200px;
-}
-
-select {
-    flex: 1;
-    min-width: 120px;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 1px solid #30363d;
-    background: #0d1117;
-    color: white;
-    cursor: pointer;
-    outline: none;
-}
-
-select:focus { border-color: var(--neon-blue); }
 
 #playerSearch {
     width: 100%;
@@ -76,7 +57,16 @@ select:focus { border-color: var(--neon-blue); }
 
 #playerSearch:focus { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
 
-/* Grid Layout */
+select {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: white;
+    cursor: pointer;
+}
+
+/* --- Grid Layout --- */
 #container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -85,7 +75,7 @@ select:focus { border-color: var(--neon-blue); }
     margin: 0 auto;
 }
 
-/* Player Card */
+/* --- Card Base --- */
 .card {
     background: var(--card-bg);
     border: 1px solid #30363d;
@@ -93,23 +83,65 @@ select:focus { border-color: var(--neon-blue); }
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
     transform: translateY(-8px);
-    background: var(--card-hover);
     border-color: #484f58;
 }
 
-.img-box {
+/* --- Elite Card Fix (S, L, W) --- */
+/* This makes the pre-designed image fill the WHOLE card */
+.card-elite {
+    aspect-ratio: 1 / 1.4; /* Standard trading card ratio */
+}
+
+.card-elite .img-box {
+    height: 100%;
+    width: 100%;
+}
+
+.card-elite .img-box img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Ensures the legend card fills the edges */
+}
+
+.card-elite .details {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent overlay for price */
+    padding: 10px;
+    text-align: center;
+}
+
+.card-elite .stats-row, 
+.card-elite .sub-info, 
+.card-elite .name, 
+.card-elite .ovr-circle {
+    display: none; /* Hide UI elements that are already inside your pre-designed images */
+}
+
+/* --- Normal Card UI (N) --- */
+.card-N .img-box {
     width: 100%;
     aspect-ratio: 1/1.1;
     background: #0d1117;
-    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
-.img-box img { width: 100%; height: 100%; object-fit: cover; }
+.card-N .img-box img {
+    width: 90%;
+    height: auto;
+    object-fit: contain;
+}
 
+/* --- UI Elements --- */
 .ovr-circle {
     position: absolute;
     top: 15px;
@@ -123,15 +155,12 @@ select:focus { border-color: var(--neon-blue); }
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 1.1rem;
     z-index: 2;
 }
 
 .details { padding: 1.2rem; }
-
-.name { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; display: block; }
-
-.sub-info { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+.name { font-size: 1.2rem; font-weight: 700; display: block; }
+.sub-info { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; }
 
 .stats-row {
     display: flex;
@@ -141,24 +170,12 @@ select:focus { border-color: var(--neon-blue); }
     border-top: 1px solid #30363d;
 }
 
-.stat { text-align: center; }
 .stat-val { display: block; font-weight: 700; font-size: 1.1rem; }
 .stat-lab { font-size: 0.7rem; color: var(--text-dim); }
 
-.price {
-    margin-top: 1rem;
-    color: #ffd700;
-    font-weight: 800;
-    font-size: 0.9rem;
-    text-align: right;
-}
+.price { color: #ffd700; font-weight: 800; text-align: right; }
 
-/* Category Border Overrides */
-.card-L { border-color: var(--legend); box-shadow: 0 0 10px rgba(255, 202, 40, 0.1); }
-.card-L .ovr-circle { border-color: var(--legend); color: var(--legend); }
-
-.card-S { border-color: var(--special); box-shadow: 0 0 10px rgba(188, 19, 254, 0.1); }
-.card-S .ovr-circle { border-color: var(--special); color: var(--special); }
-
-.card-W { border-color: var(--star); }
-.card-W .ovr-circle { border-color: var(--star); color: var(--star); }
+/* --- Category Overrides --- */
+.card-L { border-color: var(--legend); box-shadow: 0 0 15px rgba(255, 202, 40, 0.3); }
+.card-S { border-color: var(--special); box-shadow: 0 0 15px rgba(188, 19, 254, 0.3); }
+.card-W { border-color: var(--star); box-shadow: 0 0 15px rgba(0, 230, 118, 0.2); }
