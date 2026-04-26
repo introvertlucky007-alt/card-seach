@@ -1,0 +1,67 @@
+/* Card Core Structure */
+.card {
+    width: 200px;
+    height: 280px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+}
+
+/* Full Image Cards (S, L, W) */
+.card-S, .card-L, .card-W {
+    background: #000;
+}
+
+.full-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Price overlay for readability on full images */
+.card-price-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #4caf50;
+    font-weight: bold;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Legend Specific Glow */
+.card-L {
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Star Specific Glow */
+.card-W {
+    border: 2px solid #e2e8f0;
+}
+
+/* Normal Card (N) Styling */
+.card-N {
+    background-image: url('templates/normal_template.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.ovr-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: 2px 2px #000;
+}
